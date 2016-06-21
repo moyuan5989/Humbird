@@ -4,6 +4,7 @@ myApp.controller('MenuCtrl', function ($scope, $rootScope, $ionicPopup){
 
   $scope.logout = function()
   {
+    // alert('logout');
     var confirmPopup = $ionicPopup.confirm({
       title: 'Sign out',
       template: 'Are you sure to sign out?',
