@@ -43,6 +43,11 @@ myApp.config(function($stateProvider, $urlRouterProvider) {
         controller: 'WaveDetailCtrl'
       }
     }
+
+  .state('waiting', {
+    url: '/waiting',
+    templateUrl: 'templates/waiting.html',
+    // controller: 'WaitCtrl'
   })
 
   .state('menu.home', {
@@ -114,6 +119,7 @@ myApp.config(function($stateProvider, $urlRouterProvider) {
       }
     }
   })
+
   .state('menu.profile', {
     url: '/profile',
     views: {
@@ -122,7 +128,7 @@ myApp.config(function($stateProvider, $urlRouterProvider) {
         controller: 'ProfileCtrl'
       }
     }
-  })
+  });
 
   // .state('profile', {
   //   url: '/profile',
@@ -133,7 +139,6 @@ myApp.config(function($stateProvider, $urlRouterProvider) {
 
   // })
 
-;
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/welcome');
-});
+};
