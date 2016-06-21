@@ -43,6 +43,7 @@ myApp.config(function($stateProvider, $urlRouterProvider) {
         controller: 'WaveDetailCtrl'
       }
     }
+  })
 
   .state('waiting', {
     url: '/waiting',
@@ -130,15 +131,6 @@ myApp.config(function($stateProvider, $urlRouterProvider) {
     }
   });
 
-  // .state('profile', {
-  //   url: '/profile',
-
-  //       templateUrl: 'templates/profile.html',
-  //       controller: 'ProfileCtrl'
-
-
-  // })
-
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/welcome');
-};
+});
