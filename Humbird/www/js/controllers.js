@@ -8,7 +8,7 @@ myApp.controller('MenuCtrl', function ($scope, $rootScope, $ionicPopup){
     var confirmPopup = $ionicPopup.confirm({
       title: 'Sign out',
       template: 'Are you sure to sign out?',
-      okType: 'button-balanced'
+      okType: 'button-calm'
     });
 
     confirmPopup.then(function(res) {
@@ -51,7 +51,7 @@ myApp.controller('WelcomeCtrl', function (Auth, Requests, $scope, $ionicModal, $
       var popupAlert_wrong = $ionicPopup.alert({
         title: 'Wrong email format',
         template: 'We only accept emails that end with edu',
-        okType: 'button-balanced'
+        okType: 'button-calm'
       });
 
       //alert("Please enter email and password both");
@@ -75,7 +75,7 @@ myApp.controller('WelcomeCtrl', function (Auth, Requests, $scope, $ionicModal, $
           var popupAlert_success = $ionicPopup.alert({
             title: 'Success',
             template: 'User created successfully!',
-            okType: 'button-balanced'
+            okType: 'button-calm'
           });
 
           //alert("User created successfully!");
@@ -91,7 +91,7 @@ myApp.controller('WelcomeCtrl', function (Auth, Requests, $scope, $ionicModal, $
           var popupAlert_error = $ionicPopup.alert({
             title: 'Error',
             template: error,
-            okType: 'button-balanced'
+            okType: 'button-calm'
           });
 
           //alert("Error: " + error);
@@ -103,7 +103,7 @@ myApp.controller('WelcomeCtrl', function (Auth, Requests, $scope, $ionicModal, $
         var popupAlert_missing = $ionicPopup.alert({
           title: 'Missing details',
           template: 'Please fill all details.',
-          okType: 'button-balanced'
+          okType: 'button-calm'
         });
 
         //alert("Please enter email and password both");
@@ -155,7 +155,7 @@ myApp.controller('LoginCtrl',
         var popopAlert_wrong = $ionicPopup.alert({
           title: 'Wrong email and password combination',
           template: 'Please fill correct email and password combination.',
-          okType: 'button-balanced'
+          okType: 'button-calm'
         });
 
         popopAlert_wrong.then(function(res){
@@ -170,7 +170,7 @@ myApp.controller('LoginCtrl',
       var popupAlert_missing = $ionicPopup.alert({
         title: 'Missing email or password',
         template: 'Please fill email and password both.',
-        okType: 'button-balanced'
+        okType: 'button-calm'
       });
 
       //alert("Please enter email and password both");
