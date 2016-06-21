@@ -1,11 +1,38 @@
 myApp.config(function($stateProvider, $urlRouterProvider) {
   $stateProvider
 
-    .state('menu', {
+  .state('menu', {
     url: '/menu',
     abstract: true,
     templateUrl: 'templates/menu.html'
     // controller: 'MenuCtrl'
+  })
+
+  .state('welcome', {
+    url: '/welcome',
+    templateUrl: 'templates/welcome.html',
+    controller: 'WelcomeCtrl'
+  })
+
+  .state('login', {
+    url: '/login',
+    templateUrl: 'templates/login.html',
+    controller: 'LoginCtrl',
+    resolve: {
+  // controller will not be loaded until $waitForAuth resolves
+  // Auth refers to our $firebaseAuth wrapper in the example above
+  "currentAuth": ["Auth",
+  function (Auth) {
+        // $waitForAuth returns a promise so the resolve waits for it to complete
+        return Auth.$waitForAuth();
+      }]
+    }
+  })
+
+  .state('forgetPwd', {
+    url: '/forgetPwd',
+    templateUrl: 'templates/forgetPwd.html',
+    controller: 'forgetPwdCtrl'
   })
 
   .state('menu.home', {
@@ -19,24 +46,24 @@ myApp.config(function($stateProvider, $urlRouterProvider) {
   })
 
   .state('menu.history', {
-      url: '/history',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/history.html'
-        }
+    url: '/history',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/history.html'
       }
-    })
+    }
+  })
 
-    .state('menu.payment', {
-      url: '/payment',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/payment.html',
-          controller: 'PayCtrl'
-          
-        }
+  .state('menu.payment', {
+    url: '/payment',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/payment.html',
+        controller: 'PayCtrl'
+
       }
-    })
+    }
+  })
 
   .state('menu.wave', {
     url: '/wave',
@@ -89,14 +116,14 @@ myApp.config(function($stateProvider, $urlRouterProvider) {
 
   // .state('profile', {
   //   url: '/profile',
-    
+
   //       templateUrl: 'templates/profile.html',
   //       controller: 'ProfileCtrl'
-      
-    
+
+
   // })
 
-  ;
+;
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/menu/home');
+  $urlRouterProvider.otherwise('/welcome');
 });

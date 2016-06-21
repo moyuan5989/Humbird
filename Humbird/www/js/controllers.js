@@ -1,46 +1,216 @@
-// myApp.controller('MenuCtrl', function($scope, $ionicModal, $timeout) {
+myApp.controller('MenuCtrl', function ($scope, $rootScope, $ionicPopup){
 
-//   // With the new view caching in Ionic, Controllers are only called
-//   // when they are recreated or on app start, instead of every page change.
-//   // To listen for when this page is active (for example, to refresh data),
-//   // listen for the $ionicView.enter event:
-//   //$scope.$on('$ionicView.enter', function(e) {
-//   //});
+  console.log("menu controller initiate");
 
-//   // Form data for the login modal
-//   $scope.loginData = {};
+  $scope.logout = function()
+  {
+    var confirmPopup = $ionicPopup.confirm({
+      title: 'Sign out',
+      template: 'Are you sure to sign out?',
+      okType: 'button-balanced'
+    });
 
-//   // Create the login modal that we will use later
-//   $ionicModal.fromTemplateUrl('templates/login.html', {
-//     scope: $scope
-//   }).then(function(modal) {
-//     $scope.modal = modal;
-//   });
+    confirmPopup.then(function(res) {
+      if(res)
+      {
+        $rootScope.logout();
+      }
+      else
+      {
+        console.log('log out cancelled');
+      }
+    });
 
-//   // Triggered in the login modal to close it
-//   $scope.closeLogin = function() {
-//     $scope.modal.hide();
-//   };
+  }
+});
 
-//   // Open the login modal
-//   $scope.login = function() {
-//     $scope.modal.show();
-//   };
+myApp.controller('WelcomeCtrl', function (Auth, Requests, $scope, $ionicModal, $firebaseAuth, $location, $ionicLoading, $ionicPopup){
 
-//   // Perform the login action when the user submits the login form
-//   $scope.doLogin = function() {
-//     console.log('Doing login', $scope.loginData);
+  console.log("welcome controller initiated");
 
-//     // Simulate a login delay. Remove this and replace with your login
-//     // code if using a login system
-//     $timeout(function() {
-//       $scope.closeLogin();
-//     }, 1000);
-//   };
-// });
+  $ionicModal.fromTemplateUrl('templates/signup.html', {
+    scope: $scope
+  }).then(function (modal) {
+    $scope.modal = modal;
+  });
 
-myApp.controller('HomeCtrl', ['$scope', '$location', 'Requests','Instant', 
-  function($scope, $location, Requests, Instant){
+  $scope.toSignin = function() {
+    $location.path('/login');
+  };
+
+  $scope.createUser = function (user) {
+
+    console.log("Create User Function called");
+
+    var regex = /^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.edu)$/;
+    var isvalidEmail = regex.test(user.email);
+
+    if(!isvalidEmail)
+    {
+      var popupAlert_wrong = $ionicPopup.alert({
+        title: 'Wrong email format',
+        template: 'We only accept emails that end with edu',
+        okType: 'button-balanced'
+      });
+
+      //alert("Please enter email and password both");
+      popupAlert_wrong.then(function(res){
+        console.log("Wrong email format.");
+      });
+    }
+    else
+    {
+      if (user && user.email && user.password && user.firstname && user.lastname)
+      {
+        $ionicLoading.show({
+          template: 'Signing Up...'
+        });
+
+        Auth.$createUser({
+          email: user.email,
+          password: user.password
+        }).then(function (userData) {
+
+          var popupAlert_success = $ionicPopup.alert({
+            title: 'Success',
+            template: 'User created successfully!',
+            okType: 'button-balanced'
+          });
+
+          //alert("User created successfully!");
+          Requests.child("users").child(userData.uid).set({
+            email: user.email,
+            firstname: user.firstname,
+            lastname: user.lastname
+          });
+          $ionicLoading.hide();
+          $scope.modal.hide();
+        }).catch(function (error) {
+
+          var popupAlert_error = $ionicPopup.alert({
+            title: 'Error',
+            template: error,
+            okType: 'button-balanced'
+          });
+
+          //alert("Error: " + error);
+          $ionicLoading.hide();
+        });
+      }
+      else
+      {
+        var popupAlert_missing = $ionicPopup.alert({
+          title: 'Missing details',
+          template: 'Please fill all details.',
+          okType: 'button-balanced'
+        });
+
+        //alert("Please enter email and password both");
+        popupAlert_missing.then(function(res){
+          console.log("Please fill all details");
+        });
+
+        //alert("Please fill all details");
+      }
+    }
+  }
+
+});
+
+
+myApp.controller('LoginCtrl',
+  function (Auth, Requests, $scope, $ionicModal, $state, $firebaseAuth, $ionicLoading, $rootScope, $ionicPopup) {
+
+  console.log('Login Controller Initialized');
+
+  $scope.goback = function() {
+    $state.go('welcome');
+  };
+
+  $scope.signIn = function (user) {
+
+    if (user && user.email && user.pwdForLogin) {
+      $ionicLoading.show({
+        template: 'Signing In...'
+      });
+      Auth.$authWithPassword({
+        email: user.email,
+        password: user.pwdForLogin
+      }).then(function (authData) {
+        console.log("Logged in as:" + authData.uid);
+        Requests.child("users").child(authData.uid).once('value', function (snapshot) {
+          var val = snapshot.val();
+          // To Update AngularJS $scope either use $apply or $timeout
+          $scope.$apply(function () {
+            $rootScope.firstname = val.firstname;
+            $rootScope.lastname = val.lastname;
+            $rootScope.uid = authData.uid;
+          });
+        });
+        $ionicLoading.hide();
+        $state.go('menu.home');
+      }).catch(function (error) {
+
+        var popopAlert_wrong = $ionicPopup.alert({
+          title: 'Wrong email and password combination',
+          template: 'Please fill correct email and password combination.',
+          okType: 'button-balanced'
+        });
+
+        popopAlert_wrong.then(function(res){
+          console.log("Authentication failed:" + error.message);
+        });
+        //alert("Authentication failed:" + error.message);
+        $ionicLoading.hide();
+      });
+    }
+    else
+    {
+      var popupAlert_missing = $ionicPopup.alert({
+        title: 'Missing email or password',
+        template: 'Please fill email and password both.',
+        okType: 'button-balanced'
+      });
+
+      //alert("Please enter email and password both");
+      popupAlert_missing.then(function(res){
+        console.log("Please enter email and password both");
+      });
+    }
+  }
+
+  $scope.toForgetPwd = function(user)
+  {
+    $state.go('forgetPwd');
+  }
+
+});
+
+myApp.controller('forgetPwdCtrl', function($scope, Requests, $state){
+
+  console.log("forget password controller initiate");
+
+  $scope.goback = function() {
+    $state.go('login');
+  };
+
+  $scope.reset = function(user)
+  {
+    Requests.resetPassword({
+      email : user.email
+    }, function(error) {
+      if (error === null) {
+        console.log("Password reset email sent successfully");
+      } else {
+        console.log("Error sending password reset email:", error);
+      }
+    });
+  }
+
+});
+
+myApp.controller('HomeCtrl', ['$rootScope', '$scope', '$location', 'Requests','Instant', 
+  function($rootScope, $scope, $location, Requests, Instant){
 
   
 
@@ -93,6 +263,10 @@ $scope.Instant = Instant;
   }
   
 
+   $scope.form_data.need = "";
+    $scope.form_data.pay = "";
+    $scope.form_data.message = "";
+
   // $scope.form_data.need = Instant.instant_value.select_value;
   console.log("1");
   console.log($scope.form_data.need);
@@ -100,24 +274,31 @@ $scope.Instant = Instant;
   // console.log(Instant.instant_value.select_value);
     
 
-  $scope.request = function(){
+$scope.request = function(){
 
- 
-    
-    $scope.submit_data.data.set({
-  requestData: {
-    need: $scope.form_data.need,
+    var ref = Requests.child("requestData").push();
+
+    ref.set({
+      reqID: ref.key(),
+      need: $scope.form_data.need,
       pay: $scope.form_data.pay,
-      message: $scope.form_data.message
-  }
-});
+      message: $scope.form_data.message,
+      req_user_id: $scope.submit_data.data.getAuth().uid,
+      ans_user_id: ''
+    });
+
+    //console.log("id " + $rootScope.uid);
+
+    //Requests.child("users").child($rootScope.uid).update({
+    //  temp:"sss"
+    //});
 
     $scope.form_data.need = "";
     $scope.form_data.pay = "";
     $scope.form_data.message = "";
 
     $location.path( '/menu/payment' );
-  
+
   };
   
 }]);
