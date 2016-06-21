@@ -1,0 +1,7 @@
+/* Empty. Add your own CSS if you like */
+.user_header_img {
+	border-radius: 50% !important;
+	margin: 10px auto !important;
+	width: 150px !important;
+	height: auto !important;
+}

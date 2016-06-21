@@ -1,0 +1,50 @@
+
+<ion-side-menus enable-menu-with-back-views="false">
+  <ion-side-menu-content ion-side-menu-content-scale>
+    <ion-nav-bar class="bar-calm">
+      <ion-nav-back-button>
+      </ion-nav-back-button>
+
+      <ion-nav-buttons side="left">
+        <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
+        </button>
+      </ion-nav-buttons>
+    </ion-nav-bar>
+    <ion-nav-view name="menuContent"></ion-nav-view>
+  </ion-side-menu-content>
+
+  <ion-side-menu side="left" class="bar-calm menu-left-axis">
+
+    <ion-content>
+      <ion-list>
+        <ion-item class="item-img-avatar" >
+          <!-- <img ng-src="https://lh3.googleusercontent.com/-yDBu3-JWMWk/VkRDe1yulFI/AAAAAAAARaU/vCd56hB8h0E/s426/Avatar-Kit-By-RK.png"> -->
+<img class="user_header_img" ng-src="img/user_profile.jpg">
+
+          <p>Matt Kremer</p>
+        </ion-item>
+        <ion-item  menu-close href="#/menu/home">
+          <i class="ion-ios-home-outline"></i>
+          Home
+          
+        </ion-item>
+        <ion-item menu-close href="#/menu/history">
+          <i class="ion-happy-outline"></i>
+          History
+        </ion-item>
+        <ion-item menu-close href="#/menu/payment" >
+          <i class="ion-social-tumblr-outline"></i>
+          Payment
+        </ion-item>
+        <ion-item menu-close href="#/menu/wave" >
+          <i class="ion-ios-people-outline"></i>
+          Wave
+        </ion-item>
+        <ion-item menu-close href="#/menu/profile" >
+          <i class="ion-ios-people-outline"></i>
+          Profile
+        </ion-item>
+      </ion-list>
+    </ion-content>
+  </ion-side-menu>
+</ion-side-menus>
