@@ -297,7 +297,7 @@ $scope.request = function(){
     $scope.form_data.pay = "";
     $scope.form_data.message = "";
 
-    $location.path( '/menu/payment' );
+    $location.path( '/waiting' );
 
   };
 

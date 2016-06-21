@@ -35,6 +35,12 @@ myApp.config(function($stateProvider, $urlRouterProvider) {
     controller: 'forgetPwdCtrl'
   })
 
+  .state('waiting', {
+    url: '/waiting',
+    templateUrl: 'templates/waiting.html',
+    // controller: 'WaitCtrl'
+  })
+
   .state('menu.home', {
     url: '/home',
     views: {
