@@ -210,12 +210,11 @@ myApp.controller('forgetPwdCtrl', function($scope, Requests, $state){
 
 });
 
-myApp.controller('HomeCtrl', ['$rootScope', '$scope', '$location', 'Requests','Instant', 
+myApp.controller('HomeCtrl', ['$rootScope', '$scope', '$location', 'Requests','Instant',
   function($rootScope, $scope, $location, Requests, Instant){
 
-  
 
-  // var ref = new Firebase('https://everythingdata.firebaseio.com/') 
+  // var ref = new Firebase('https://everythingdata.firebaseio.com/')
 
 
 $scope.Instant = Instant;
@@ -232,10 +231,10 @@ $scope.Instant = Instant;
   };
   // alert($scope.form_data.need);
   $scope.instant = function(){
-    
+
     $location.path( '/menu/instant' );
     // $scope.form_data.need = Instant.instant_value.select_value;
-     
+
 
 
   };
@@ -251,7 +250,7 @@ $scope.Instant = Instant;
         $scope.form_data.need = Instant.select_value;
         console.log("4");
     }
-    
+
         // console.log(Instant.instant_value.select_value);
         // console.log("Instant.select_value");
         // console.log(Instant.select_value);
@@ -262,7 +261,7 @@ $scope.Instant = Instant;
     $scope.form_data.need = Instant.select_value;
 
   }
-  
+
 
    $scope.form_data.need = "";
     $scope.form_data.pay = "";
@@ -273,7 +272,7 @@ $scope.Instant = Instant;
   console.log($scope.form_data.need);
   console.log("3");
   // console.log(Instant.instant_value.select_value);
-    
+
 
 $scope.request = function(){
 
@@ -301,7 +300,7 @@ $scope.request = function(){
     $location.path( '/menu/payment' );
 
   };
-  
+
 }]);
 
 myApp.controller('PayCtrl', ['$scope', '$location',
@@ -328,10 +327,10 @@ myApp.controller('InstantCtrl', ['$scope', '$location', 'Instant',
        $location.path( '/menu/home' );
         console.log($scope.select_need);
         // console.log(Instant.select_value);
-        
+
         // Instant.select_value = $scope.select_need;
         // console.log(Instant.select_value);
-        
+
     };
 
 $scope.$watch('select_need', function() {
@@ -343,7 +342,7 @@ $scope.$watch('select_need', function() {
 }]);
 
 
-myApp.controller('ProfileCtrl', ['$scope', '$cordovaCamera', 
+myApp.controller('ProfileCtrl', ['$scope', '$cordovaCamera',
   function($scope, $cordovaCamera){
 
     // hide the status bar using the StatusBar plugin
@@ -361,14 +360,14 @@ myApp.controller('ProfileCtrl', ['$scope', '$cordovaCamera',
                     popoverOptions: CameraPopoverOptions,
                     saveToPhotoAlbum: false
                 };
-   
+
                     $cordovaCamera.getPicture(options).then(function (imageData) {
                         $scope.imgURI = "data:image/jpeg;base64," + imageData;
                     }, function (err) {
                         // An error occured. Show a message to the user
                     });
                 };
-                
-               
-  
+
+
+
 }]);
