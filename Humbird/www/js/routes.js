@@ -35,6 +35,16 @@ myApp.config(function($stateProvider, $urlRouterProvider) {
     controller: 'forgetPwdCtrl'
   })
 
+  .state('menu.waveDetail', {
+    url: '/waveDetail',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/wave_detail.html',
+        controller: 'WaveDetailCtrl'
+      }
+    }
+  })
+
   .state('menu.home', {
     url: '/home',
     views: {

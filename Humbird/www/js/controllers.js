@@ -213,11 +213,7 @@ myApp.controller('forgetPwdCtrl', function($scope, Requests, $state){
 myApp.controller('HomeCtrl', ['$rootScope', '$scope', '$location', 'Requests','Instant',
   function($rootScope, $scope, $location, Requests, Instant){
 
-
-  // var ref = new Firebase('https://everythingdata.firebaseio.com/')
-
-
-$scope.Instant = Instant;
+  $scope.Instant = Instant;
 
 
   $scope.submit_data = {
@@ -235,8 +231,6 @@ $scope.Instant = Instant;
     $location.path( '/menu/instant' );
     // $scope.form_data.need = Instant.instant_value.select_value;
 
-
-
   };
   // $scope.$apply(function(){
 
@@ -244,6 +238,7 @@ $scope.Instant = Instant;
   // });
 
   $scope.$watch('Instant.select_value', function(newVal, oldVal, scope) {
+
     if (newVal){
       console.log("5");
     console.log(Instant.select_value);
@@ -263,9 +258,9 @@ $scope.Instant = Instant;
   }
 
 
-   $scope.form_data.need = "";
-    $scope.form_data.pay = "";
-    $scope.form_data.message = "";
+  $scope.form_data.need = "";
+  $scope.form_data.pay = "";
+  $scope.form_data.message = "";
 
   // $scope.form_data.need = Instant.instant_value.select_value;
   console.log("1");
@@ -339,6 +334,20 @@ $scope.$watch('select_need', function() {
           console.log(Instant.select_value);
     });
 
+}]);
+
+myApp.controller('WaveDetailCtrl', ['$scope', 'Requests', '$rootScope', function($scope, Requests, $rootScope){
+
+  console.log("wave detail controller initiated...");
+
+  var ref = Requests.child('users').child($rootScope.uid);
+
+  $scope.answer = function()
+  {
+    ref.update({
+      ans_user_id: $rootScope.uid
+    });
+  }
 }]);
 
 
