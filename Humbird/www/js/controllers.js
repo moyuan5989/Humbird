@@ -232,10 +232,6 @@ myApp.controller('HomeCtrl', ['$rootScope', '$scope', '$location', 'Requests','I
     // $scope.form_data.need = Instant.instant_value.select_value;
 
   };
-  // $scope.$apply(function(){
-
-  //   $scope.form_data.need = Instant.instant_value.select_value;
-  // });
 
 $scope.$watch('Instant.select_value', function(newVal, oldVal, scope) {
 
@@ -464,3 +460,14 @@ myApp.controller('WaveDetailCtrl', ['$scope', 'Requests', '$rootScope', 'WaveDat
   alert("fdsfa");
 }
 }]);
+
+
+
+myApp.controller('WaitCtrl', ['$scope', '$location', 
+  function($scope, $location){
+    // alert('1');
+  $scope.clickToReturn = function(){
+    $location.path('/home')
+  };
+}]);
+

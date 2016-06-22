@@ -48,7 +48,7 @@ myApp.config(function($stateProvider, $urlRouterProvider) {
   .state('waiting', {
     url: '/waiting',
     templateUrl: 'templates/waiting.html',
-    // controller: 'WaitCtrl'
+    controller: 'WaitCtrl'
   })
 
   .state('menu.home', {
