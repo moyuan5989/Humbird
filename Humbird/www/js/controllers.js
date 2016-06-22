@@ -210,8 +210,8 @@ myApp.controller('forgetPwdCtrl', function($scope, Requests, $state){
 
 });
 
-myApp.controller('HomeCtrl', ['$rootScope', '$scope', '$location', 'Requests','Instant',
-  function($rootScope, $scope, $location, Requests, Instant){
+myApp.controller('HomeCtrl', ['$rootScope', '$scope', '$location', 'Requests','Instant', '$cordovaGeolocation', '$ionicPopup',
+  function($rootScope, $scope, $location, Requests, Instant, $cordovaGeolocation, $ionicPopup){
 
     $scope.Instant = Instant;
 
@@ -237,30 +237,30 @@ myApp.controller('HomeCtrl', ['$rootScope', '$scope', '$location', 'Requests','I
   //   $scope.form_data.need = Instant.instant_value.select_value;
   // });
 
-$scope.$watch('Instant.select_value', function(newVal, oldVal, scope) {
+  $scope.$watch('Instant.select_value', function(newVal, oldVal, scope) {
 
-  if (newVal){
-    console.log("5");
-    console.log(Instant.select_value);
-    $scope.form_data.need = Instant.select_value;
-    console.log("4");
-  }
+    if (newVal){
+      console.log("5");
+      console.log(Instant.select_value);
+      $scope.form_data.need = Instant.select_value;
+      console.log("4");
+    }
 
         // console.log(Instant.instant_value.select_value);
         // console.log("Instant.select_value");
         // console.log(Instant.select_value);
-      });
+  });
 
-$scope.clickTest = function(){
-  alert(Instant.select_value);
-  $scope.form_data.need = Instant.select_value;
+  $scope.clickTest = function(){
+    alert(Instant.select_value);
+    $scope.form_data.need = Instant.select_value;
 
-}
+  }
 
 
-$scope.form_data.need = "";
-$scope.form_data.pay = "";
-$scope.form_data.message = "";
+  //$scope.form_data.need = "";
+  //$scope.form_data.pay = "";
+  //$scope.form_data.message = "";
 
   // $scope.form_data.need = Instant.instant_value.select_value;
   console.log("1");
@@ -273,14 +273,38 @@ $scope.form_data.message = "";
 
     var ref = Requests.child("requestData").push();
 
-    ref.set({
-      reqID: ref.key(),
-      need: $scope.form_data.need,
-      pay: $scope.form_data.pay,
-      message: $scope.form_data.message,
-      req_user_id: $scope.submit_data.data.getAuth().uid,
-      ans_user_id: ''
-    });
+    var need = $scope.form_data.need;
+    var pay = $scope.form_data.pay;
+    var message = $scope.form_data.message;
+
+    var posOptions = {timeout: 10000, enableHighAccuracy: false};
+    $cordovaGeolocation
+      .getCurrentPosition(posOptions)
+      .then(function (position) {
+        var lat  = position.coords.latitude;
+        var long = position.coords.longitude;
+
+        ref.set({
+          reqID: ref.key(),
+          need: need,
+          pay: pay,
+          message: message,
+          req_user_id: $scope.submit_data.data.getAuth().uid,
+          ans_user_id: '',
+          lat: lat,
+          long: long
+        });
+
+        //alert(need + " " + pay + " " + message);
+        //console.log(need + " " + pay + " " + message);
+      }, function(err) {
+        // error
+        var popupAlert_wrong = $ionicPopup.alert({
+          title: 'Location Service Failure',
+          template: 'We cannot get current location',
+          okType: 'button-calm'
+        });
+      });
 
     //console.log("id " + $rootScope.uid);
 
@@ -288,11 +312,11 @@ $scope.form_data.message = "";
     //  temp:"sss"
     //});
 
-$scope.form_data.need = "";
-$scope.form_data.pay = "";
-$scope.form_data.message = "";
+  $scope.form_data.need = "";
+  $scope.form_data.pay = "";
+  $scope.form_data.message = "";
 
-$location.path( '/waiting' );
+  $location.path( '/waiting' );
 
 };
 
@@ -386,7 +410,7 @@ myApp.controller('WaveCtrl', ['$scope', '$cordovaGeolocation', 'WaveData',
       });
 
   };
-  
+
   $scope.test = function(){
     //alert('hah');
 
@@ -397,9 +421,14 @@ myApp.controller('WaveCtrl', ['$scope', '$cordovaGeolocation', 'WaveData',
         var lat  = position.coords.latitude;
         var long = position.coords.longitude;
 
-        alert("lat " + lat + " long " + long);
+        //alert("lat " + lat + " long " + long);
       }, function(err) {
         // error
+        var popupAlert_wrong = $ionicPopup.alert({
+          title: 'Location Service Failure',
+          template: 'We cannot get current location',
+          okType: 'button-calm'
+        });
       });
 
   };
