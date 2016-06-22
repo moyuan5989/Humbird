@@ -232,10 +232,6 @@ myApp.controller('HomeCtrl', ['$rootScope', '$scope', '$location', 'Requests','I
     // $scope.form_data.need = Instant.instant_value.select_value;
 
   };
-  // $scope.$apply(function(){
-
-  //   $scope.form_data.need = Instant.instant_value.select_value;
-  // });
 
   $scope.$watch('Instant.select_value', function(newVal, oldVal, scope) {
 
@@ -396,18 +392,28 @@ myApp.controller('ProfileCtrl', ['$scope', '$cordovaCamera',
 myApp.controller('WaveCtrl', ['$scope', '$cordovaGeolocation', 'WaveData',
  function($scope, $cordovaGeolocation, WaveData){
 
+  $scope.current_user = {
+    latitude: '',
+    longitude: ''
+  };
+
   $scope.doRefresh = function(){
     var posOptions = {timeout: 10000, enableHighAccuracy: false};
     $cordovaGeolocation
-      .getCurrentPosition(posOptions)
-      .then(function (position) {
-        var lat  = position.coords.latitude;
-        var long = position.coords.longitude;
-
-        alert("lat " + lat + " long " + long);
-      }, function(err) {
-        // error
-      });
+    .getCurrentPosition(posOptions)
+    .then(function (position) {
+      var lat  = position.coords.latitude;
+      var long = position.coords.longitude;
+      $scope.current_user = {
+        latitude: lat,
+        longitude: long
+      };
+      alert("lat " + lat + " long " + long);
+    }, function(err) {
+      alert("Can't get your current location, please try later...");
+    }).finally(function(){
+      $scope.$broadcast('scroll.refreshComplete');
+    });
 
   };
 
@@ -416,10 +422,10 @@ myApp.controller('WaveCtrl', ['$scope', '$cordovaGeolocation', 'WaveData',
 
     var posOptions = {timeout: 10000, enableHighAccuracy: false};
     $cordovaGeolocation
-      .getCurrentPosition(posOptions)
-      .then(function (position) {
-        var lat  = position.coords.latitude;
-        var long = position.coords.longitude;
+    .getCurrentPosition(posOptions)
+    .then(function (position) {
+      var lat  = position.coords.latitude;
+      var long = position.coords.longitude;
 
         //alert("lat " + lat + " long " + long);
       }, function(err) {
@@ -466,20 +472,31 @@ myApp.controller('WaveDetailCtrl', ['$scope', 'Requests', '$rootScope', 'WaveDat
 
 
   // var ref = Requests.child('users').child($rootScope.uid);
- $scope.request_data = {
+  $scope.request_data = {
     need: WaveData.data.need,
     pay: WaveData.data.pay
- };
+  };
 
  // alert($scope.request_data.need);
 
-  $scope.answer = function()
-  {
+ $scope.answer = function()
+ {
 
-    ref.update({
-      ans_user_id: $rootScope.uid
-    });
+  ref.update({
+    ans_user_id: $rootScope.uid
+  });
 
-    alert("fdsfa");
-  }
+  alert("fdsfa");
+}
 }]);
+
+
+
+myApp.controller('WaitCtrl', ['$scope', '$location',
+  function($scope, $location){
+    // alert('1');
+  $scope.clickToReturn = function(){
+    $location.path('/home')
+  };
+}]);
+
