@@ -269,7 +269,7 @@ myApp.controller('HomeCtrl', ['$rootScope', '$scope', '$location', 'Requests','I
   // console.log(Instant.instant_value.select_value);
 
 
-$scope.request = function(){
+  $scope.request = function(){
 
     var ref = Requests.child("requestData").push();
 
@@ -379,16 +379,18 @@ myApp.controller('WaveCtrl', ['$scope', function($scope){
 myApp.controller('WaveDetailCtrl', ['$scope', 'Requests', '$rootScope', function($scope, Requests, $rootScope){
 
   // alert("123");
-  console.log("wave detail controller initiated...");
+  console.log("wave detail controller initiated..." + $rootScope.uid);
 
-  // var ref = Requests.child('users').child($rootScope.uid);
-$scope.test = function(){
-    alert('hah');
-  }
+  var ref = Requests.child('users').child($rootScope.uid);
+
   $scope.answer = function()
   {
+
+    //alert("Fsdafas");
     ref.update({
       ans_user_id: $rootScope.uid
     });
+
+    alert("fdsfa");
   }
 }]);
