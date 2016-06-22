@@ -122,25 +122,25 @@ myApp.controller('WelcomeCtrl', function (Auth, Requests, $scope, $ionicModal, $
 myApp.controller('LoginCtrl',
   function (Auth, Requests, $scope, $ionicModal, $state, $firebaseAuth, $ionicLoading, $rootScope, $ionicPopup) {
 
-  console.log('Login Controller Initialized');
+    console.log('Login Controller Initialized');
 
-  $scope.goback = function() {
-    $state.go('welcome');
-  };
+    $scope.goback = function() {
+      $state.go('welcome');
+    };
 
-  $scope.signIn = function (user) {
+    $scope.signIn = function (user) {
 
-    if (user && user.email && user.pwdForLogin) {
-      $ionicLoading.show({
-        template: 'Signing In...'
-      });
-      Auth.$authWithPassword({
-        email: user.email,
-        password: user.pwdForLogin
-      }).then(function (authData) {
-        console.log("Logged in as:" + authData.uid);
-        Requests.child("users").child(authData.uid).once('value', function (snapshot) {
-          var val = snapshot.val();
+      if (user && user.email && user.pwdForLogin) {
+        $ionicLoading.show({
+          template: 'Signing In...'
+        });
+        Auth.$authWithPassword({
+          email: user.email,
+          password: user.pwdForLogin
+        }).then(function (authData) {
+          console.log("Logged in as:" + authData.uid);
+          Requests.child("users").child(authData.uid).once('value', function (snapshot) {
+            var val = snapshot.val();
           // To Update AngularJS $scope either use $apply or $timeout
           $scope.$apply(function () {
             $rootScope.firstname = val.firstname;
@@ -148,30 +148,30 @@ myApp.controller('LoginCtrl',
             $rootScope.uid = authData.uid;
           });
         });
-        $ionicLoading.hide();
-        $state.go('menu.home');
-      }).catch(function (error) {
+          $ionicLoading.hide();
+          $state.go('menu.home');
+        }).catch(function (error) {
 
-        var popopAlert_wrong = $ionicPopup.alert({
-          title: 'Wrong email and password combination',
-          template: 'Please fill correct email and password combination.',
-          okType: 'button-calm'
-        });
+          var popopAlert_wrong = $ionicPopup.alert({
+            title: 'Wrong email and password combination',
+            template: 'Please fill correct email and password combination.',
+            okType: 'button-calm'
+          });
 
-        popopAlert_wrong.then(function(res){
-          console.log("Authentication failed:" + error.message);
-        });
+          popopAlert_wrong.then(function(res){
+            console.log("Authentication failed:" + error.message);
+          });
         //alert("Authentication failed:" + error.message);
         $ionicLoading.hide();
       });
-    }
-    else
-    {
-      var popupAlert_missing = $ionicPopup.alert({
-        title: 'Missing email or password',
-        template: 'Please fill email and password both.',
-        okType: 'button-calm'
-      });
+      }
+      else
+      {
+        var popupAlert_missing = $ionicPopup.alert({
+          title: 'Missing email or password',
+          template: 'Please fill email and password both.',
+          okType: 'button-calm'
+        });
 
       //alert("Please enter email and password both");
       popupAlert_missing.then(function(res){
@@ -213,18 +213,18 @@ myApp.controller('forgetPwdCtrl', function($scope, Requests, $state){
 myApp.controller('HomeCtrl', ['$rootScope', '$scope', '$location', 'Requests','Instant',
   function($rootScope, $scope, $location, Requests, Instant){
 
-  $scope.Instant = Instant;
+    $scope.Instant = Instant;
 
 
-  $scope.submit_data = {
-    data: Requests
-  };
+    $scope.submit_data = {
+      data: Requests
+    };
 
-  $scope.form_data = {
-    need: '',
-    pay: '',
-    message: ''
-  };
+    $scope.form_data = {
+      need: '',
+      pay: '',
+      message: ''
+    };
   // alert($scope.form_data.need);
   $scope.instant = function(){
 
@@ -237,30 +237,30 @@ myApp.controller('HomeCtrl', ['$rootScope', '$scope', '$location', 'Requests','I
   //   $scope.form_data.need = Instant.instant_value.select_value;
   // });
 
-  $scope.$watch('Instant.select_value', function(newVal, oldVal, scope) {
+$scope.$watch('Instant.select_value', function(newVal, oldVal, scope) {
 
-    if (newVal){
-      console.log("5");
+  if (newVal){
+    console.log("5");
     console.log(Instant.select_value);
-        $scope.form_data.need = Instant.select_value;
-        console.log("4");
-    }
+    $scope.form_data.need = Instant.select_value;
+    console.log("4");
+  }
 
         // console.log(Instant.instant_value.select_value);
         // console.log("Instant.select_value");
         // console.log(Instant.select_value);
-    });
+      });
 
-  $scope.clickTest = function(){
-    alert(Instant.select_value);
-    $scope.form_data.need = Instant.select_value;
+$scope.clickTest = function(){
+  alert(Instant.select_value);
+  $scope.form_data.need = Instant.select_value;
 
-  }
+}
 
 
-  $scope.form_data.need = "";
-  $scope.form_data.pay = "";
-  $scope.form_data.message = "";
+$scope.form_data.need = "";
+$scope.form_data.pay = "";
+$scope.form_data.message = "";
 
   // $scope.form_data.need = Instant.instant_value.select_value;
   console.log("1");
@@ -288,13 +288,13 @@ myApp.controller('HomeCtrl', ['$rootScope', '$scope', '$location', 'Requests','I
     //  temp:"sss"
     //});
 
-    $scope.form_data.need = "";
-    $scope.form_data.pay = "";
-    $scope.form_data.message = "";
+$scope.form_data.need = "";
+$scope.form_data.pay = "";
+$scope.form_data.message = "";
 
-    $location.path( '/waiting' );
+$location.path( '/waiting' );
 
-  };
+};
 
 }]);
 
@@ -317,24 +317,24 @@ myApp.controller('InstantCtrl', ['$scope', '$location', 'Instant',
     // alert(Instant.name);
     $scope.select = function(msg, $event){
       // alert('sdsd');
-       var select_item = event.target.innerHTML || "";
-       $scope.select_need = select_item.trim();
-       $location.path( '/menu/home' );
-        console.log($scope.select_need);
+      var select_item = event.target.innerHTML || "";
+      $scope.select_need = select_item.trim();
+      $location.path( '/menu/home' );
+      console.log($scope.select_need);
         // console.log(Instant.select_value);
 
         // Instant.select_value = $scope.select_need;
         // console.log(Instant.select_value);
 
-    };
+      };
 
-$scope.$watch('select_need', function() {
-          console.log($scope.select_need);
-          Instant.select_value = $scope.select_need;
-          console.log(Instant.select_value);
-    });
+      $scope.$watch('select_need', function() {
+        console.log($scope.select_need);
+        Instant.select_value = $scope.select_need;
+        console.log(Instant.select_value);
+      });
 
-}]);
+    }]);
 
 
 
@@ -346,31 +346,30 @@ myApp.controller('ProfileCtrl', ['$scope', '$cordovaCamera',
     // StatusBar.hide();
     $scope.imgURI = "img/user_profile.jpg"
     $scope.takePhoto = function () {
-                  var options = {
-                    quality: 75,
-                    destinationType: Camera.DestinationType.DATA_URL,
-                    sourceType: Camera.PictureSourceType.CAMERA,
-                    allowEdit: true,
-                    encodingType: Camera.EncodingType.JPEG,
-                    targetWidth: 300,
-                    targetHeight: 300,
-                    popoverOptions: CameraPopoverOptions,
-                    saveToPhotoAlbum: false
-                };
+      var options = {
+        quality: 75,
+        destinationType: Camera.DestinationType.DATA_URL,
+        sourceType: Camera.PictureSourceType.CAMERA,
+        allowEdit: true,
+        encodingType: Camera.EncodingType.JPEG,
+        targetWidth: 300,
+        targetHeight: 300,
+        popoverOptions: CameraPopoverOptions,
+        saveToPhotoAlbum: false
+      };
 
-                    $cordovaCamera.getPicture(options).then(function (imageData) {
-                        $scope.imgURI = "data:image/jpeg;base64," + imageData;
-                    }, function (err) {
+      $cordovaCamera.getPicture(options).then(function (imageData) {
+        $scope.imgURI = "data:image/jpeg;base64," + imageData;
+      }, function (err) {
                         // An error occured. Show a message to the user
-                    });
-                };
+                      });
+    };
 
 
 
-}]);
+  }]);
 
 myApp.controller('WaveCtrl', ['$scope', '$cordovaGeolocation', function($scope, $cordovaGeolocation){
-
   $scope.test = function(){
     //alert('hah');
 
@@ -389,12 +388,19 @@ myApp.controller('WaveCtrl', ['$scope', '$cordovaGeolocation', function($scope, 
   };
 }]);
 
-myApp.controller('WaveDetailCtrl', ['$scope', 'Requests', '$rootScope', function($scope, Requests, $rootScope){
+myApp.controller('WaveDetailCtrl', ['$scope', 'Requests', '$rootScope', 'WaveData',
+  function($scope, Requests, $rootScope, WaveData){
 
   // alert("123");
   console.log("wave detail controller initiated..." + $rootScope.uid);
 
   var ref = Requests.child('users').child($rootScope.uid);
+
+
+  // var ref = Requests.child('users').child($rootScope.uid);
+  $scope.test = function(){
+    alert('hah');
+  }
 
   $scope.answer = function()
   {
