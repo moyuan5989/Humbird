@@ -375,6 +375,28 @@ myApp.controller('WaveCtrl', ['$scope', 'WaveData',
   $scope.test = function(){
     alert('hah');
   };
+
+  $scope.users_data = [{
+    request: '1',
+    need: 'I need move some boxes',
+    pay: '10'
+  },
+  {
+    request: '2',
+    need: 'I need watch movie',
+    pay: '20'
+  },
+  {
+    request: '3',
+    need: 'I need have a drink',
+    pay: '30'
+  }];
+
+  $scope.select = function(index){
+    WaveData.data = $scope.users_data[index];
+    // alert(WaveData.data.need);
+  }
+
 }]);
 
 myApp.controller('WaveDetailCtrl', ['$scope', 'Requests', '$rootScope', 'WaveData', 
@@ -383,18 +405,20 @@ myApp.controller('WaveDetailCtrl', ['$scope', 'Requests', '$rootScope', 'WaveDat
   // alert("123");
   console.log("wave detail controller initiated..." + $rootScope.uid);
 
-  var ref = Requests.child('users').child($rootScope.uid);
+  // var ref = Requests.child('users').child($rootScope.uid);
 
 
   // var ref = Requests.child('users').child($rootScope.uid);
-  $scope.test = function(){
-    alert('hah');
-  }
+ $scope.request_data = {
+    need: WaveData.data.need,
+    pay: WaveData.data.pay
+ };
+
+ // alert($scope.request_data.need);
 
   $scope.answer = function()
   {
 
-    //alert("Fsdafas");
     ref.update({
       ans_user_id: $rootScope.uid
     });

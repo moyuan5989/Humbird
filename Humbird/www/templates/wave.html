@@ -3,14 +3,15 @@
     <!-- href="#/menu/wave_detail" -->
     <!-- ui-sref="menu.wave_detail" -->
         <ion-list ui-sref="menu.wave_detail">
-            <ion-item class="item-avatar">
+            <ion-item class="item-avatar" ng-repeat="user_data in users_data"
+            ng-click="select($index)">
                 <img src="img/user1.jpg">
                 <span class="item-note">now</span>
-                <h2>I need move some boxes</h2> 
-                <p>I pay $ 10</p>
+                <h2>{{ user_data.need }}</h2> 
+                <p>I pay $ {{ user_data.pay }}</p>
             </ion-item>
 
-            <ion-item class="item-avatar" >
+           <!--  <ion-item class="item-avatar" >
                 <img src="img/user1.jpg" >
                 <span class="item-note">2 min</span>
                 <h2>I need watch movie</h2>
@@ -19,8 +20,8 @@
             <ion-item class="item-avatar  "  >
                 <img src="img/user2.jpg">
                 <span class="item-note">3 min</span>
-                <h2>I need have a drink</h2>
-                <p>I pay $ 5</p>
+                <h2>I need have a drink</h2> -->
+              <!--   <p>I pay $ 5</p>
             </ion-item>
             <ion-item class="item-avatar  "  >
                 <img src="img/user1.jpg">
@@ -63,7 +64,7 @@
                 <span class="item-note">8 min</span>
                 <h2>I need toilet paper</h2>
                 <p>I pay $ 100</p>
-            </ion-item>
+            </ion-item> -->
         </ion-list>
         <!-- <button ng-click="test()" class=" button button-calm  button-block ">Test</button> -->
     </ion-content>

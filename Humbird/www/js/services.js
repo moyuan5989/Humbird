@@ -22,8 +22,8 @@ myApp.service('Instant', function(){
 
 });
 
-myApp.service('WaveData', ['', function(){
-	var wave_data = {request_id: ''};
+myApp.service('WaveData', function(){
+	var data = {};
 
-	return wave_data;
-}])
+	return data;
+});
