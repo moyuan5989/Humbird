@@ -369,10 +369,23 @@ myApp.controller('ProfileCtrl', ['$scope', '$cordovaCamera',
 
 }]);
 
-myApp.controller('WaveCtrl', ['$scope', function($scope){
+myApp.controller('WaveCtrl', ['$scope', '$cordovaGeolocation', function($scope, $cordovaGeolocation){
 
   $scope.test = function(){
-    alert('hah');
+    //alert('hah');
+
+    var posOptions = {timeout: 10000, enableHighAccuracy: false};
+    $cordovaGeolocation
+      .getCurrentPosition(posOptions)
+      .then(function (position) {
+        var lat  = position.coords.latitude;
+        var long = position.coords.longitude;
+
+        alert("lat " + lat + " long " + long);
+      }, function(err) {
+        // error
+      });
+
   };
 }]);
 
