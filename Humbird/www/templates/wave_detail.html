@@ -3,11 +3,11 @@
         <div class="">
             <img src="img/user1.jpg" width="80%" height="auto" style="display: block; margin-left: auto; margin-right: auto; margin-top: 30px; margin-bottom: 5px;">
         </div>
-        <p style="color:#000000;text-align:center; " class=" ">Happy Girl</p>
-        <p style="color:#000000;text-align:center; padding:0;" class=" ">University of Southern California</p>
+        <p style="color:#000000;text-align:center; " >Happy Girl</p>
+        <p style="color:#000000;text-align:center; padding:0;" >University of Southern California</p>
         <ion-list  class=" ">
-            <ion-item >I need move heavy boxes</ion-item>
-            <ion-item >I pay $10</ion-item>
+            <ion-item >{{ request_data.need }}</ion-item>
+            <ion-item >I pay ${{ request_data.pay }}</ion-item>
             <ion-item >I have some boxes to move, please help me</ion-item>
         </ion-list>
 
