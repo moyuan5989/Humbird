@@ -86,13 +86,14 @@ myApp.config(function($stateProvider, $urlRouterProvider) {
     views: {
       'menuContent': {
         templateUrl: 'templates/wave.html',
-        // controller: 'WaveCtrl'
+        controller: 'WaveCtrl'
       }
     }
   })
 
   .state('menu.wave_detail', {
     url: '/wave_detail',
+    cache: false,
     views: {
       'menuContent': {
         templateUrl: 'templates/wave_detail.html',

@@ -336,19 +336,7 @@ $scope.$watch('select_need', function() {
 
 }]);
 
-myApp.controller('WaveDetailCtrl', ['$scope', 'Requests', '$rootScope', function($scope, Requests, $rootScope){
 
-  console.log("wave detail controller initiated...");
-
-  var ref = Requests.child('users').child($rootScope.uid);
-
-  $scope.answer = function()
-  {
-    ref.update({
-      ans_user_id: $rootScope.uid
-    });
-  }
-}]);
 
 
 myApp.controller('ProfileCtrl', ['$scope', '$cordovaCamera',
@@ -379,4 +367,28 @@ myApp.controller('ProfileCtrl', ['$scope', '$cordovaCamera',
 
 
 
+}]);
+
+myApp.controller('WaveCtrl', ['$scope', function($scope){
+
+  $scope.test = function(){
+    alert('hah');
+  };
+}]);
+
+myApp.controller('WaveDetailCtrl', ['$scope', 'Requests', '$rootScope', function($scope, Requests, $rootScope){
+
+  // alert("123");
+  console.log("wave detail controller initiated...");
+
+  // var ref = Requests.child('users').child($rootScope.uid);
+$scope.test = function(){
+    alert('hah');
+  }
+  $scope.answer = function()
+  {
+    ref.update({
+      ans_user_id: $rootScope.uid
+    });
+  }
 }]);

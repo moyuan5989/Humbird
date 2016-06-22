@@ -158,3 +158,8 @@
       #profile_photo{
       	margin-top: 0 !important;
       }
+
+.spinner svg {
+  width: 200px;
+  height: 200px;
+}
