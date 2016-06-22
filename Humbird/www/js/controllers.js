@@ -369,7 +369,8 @@ myApp.controller('ProfileCtrl', ['$scope', '$cordovaCamera',
 
   }]);
 
-myApp.controller('WaveCtrl', 'WaveData', ['$scope', function($scope, WaveData){
+myApp.controller('WaveCtrl', ['$scope', 'WaveData',
+ function($scope, WaveData){
 
   $scope.test = function(){
     alert('hah');
@@ -380,16 +381,24 @@ myApp.controller('WaveDetailCtrl', ['$scope', 'Requests', '$rootScope', 'WaveDat
   function($scope, Requests, $rootScope, WaveData){
 
   // alert("123");
-  console.log("wave detail controller initiated...");
+  console.log("wave detail controller initiated..." + $rootScope.uid);
+
+  var ref = Requests.child('users').child($rootScope.uid);
+
 
   // var ref = Requests.child('users').child($rootScope.uid);
   $scope.test = function(){
     alert('hah');
   }
+
   $scope.answer = function()
   {
+
+    //alert("Fsdafas");
     ref.update({
       ans_user_id: $rootScope.uid
     });
+
+    alert("fdsfa");
   }
 }]);
