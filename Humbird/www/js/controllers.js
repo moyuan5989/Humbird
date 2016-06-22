@@ -369,7 +369,8 @@ myApp.controller('ProfileCtrl', ['$scope', '$cordovaCamera',
 
   }]);
 
-myApp.controller('WaveCtrl', ['$scope', '$cordovaGeolocation', function($scope, $cordovaGeolocation){
+myApp.controller('WaveCtrl', ['$scope', '$cordovaGeolocation', 'WaveData',
+ function($scope, $cordovaGeolocation, WaveData){
   $scope.test = function(){
     //alert('hah');
 
