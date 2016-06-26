@@ -10,7 +10,7 @@
             <ion-item class="item-avatar" ng-repeat="user_data in users_data"
             ng-click="select($index)">
                 <img src="img/user1.jpg">
-                <span class="item-note">now</span>
+                <span class="item-note">{{ user_data.time }}</span>
                 <h2>{{ user_data.need }}</h2>
                 <p>I pay $ {{ user_data.pay }}</p>
             </ion-item>

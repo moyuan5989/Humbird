@@ -7,13 +7,13 @@
             </div>
             <label class="item item-input ">
                 <span class="input-label">I need</span>
-                <input type="text" placeholder="" ng-model="form_data.need">
-               
+                <input type="text" placeholder="" ng-model="form_data.need" required>
+
             </label>
-            
+
             <label class="item item-input ">
                 <span class="input-label" >I pay $</span>
-                <input type="text" placeholder="" ng-model="form_data.pay"> 
+                <input type="number" placeholder="" ng-model="form_data.pay" required>
             </label>
             <label class="item item-input ">
                 <span class="input-label">Message</span><textarea rows="5" placeholder="(optional) Describe more details" ng-model="form_data.message"></textarea>
