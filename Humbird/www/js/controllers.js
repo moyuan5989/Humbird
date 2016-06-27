@@ -290,7 +290,7 @@ myApp.controller('HomeCtrl', ['$rootScope', '$scope', '$location', 'Requests','I
           pay: pay,
           message: message,
           req_user_id: $scope.submit_data.data.getAuth().uid,
-          //ans_user_id: '',
+          ans_user_id: '',
           lat: lat,
           long: long,
           time: time
@@ -307,12 +307,6 @@ myApp.controller('HomeCtrl', ['$rootScope', '$scope', '$location', 'Requests','I
           okType: 'button-calm'
         });
       });
-
-    //console.log("id " + $rootScope.uid);
-
-    //Requests.child("users").child($rootScope.uid).update({
-    //  temp:"sss"
-    //});
 
   $scope.form_data.need = "";
   $scope.form_data.pay = "";
@@ -388,9 +382,8 @@ myApp.controller('ProfileCtrl', ['$scope', '$cordovaCamera',
         $scope.imgURI = "data:image/jpeg;base64," + imageData;
       }, function (err) {
                         // An error occured. Show a message to the user
-                      });
+      });
     };
-
 
 
   }]);
@@ -398,12 +391,16 @@ myApp.controller('ProfileCtrl', ['$scope', '$cordovaCamera',
 myApp.controller('WaveCtrl', ['$scope', '$cordovaGeolocation', 'WaveData', 'Requests',
  function($scope, $cordovaGeolocation, WaveData, Requests){
 
+  /************* initialize data ***********************/
+
   $scope.current_user = {
     latitude: '',
     longitude: ''
   };
 
   $scope.users_data = [];
+
+  /****************************************************/
 
   $scope.$on('$ionicView.loaded', function() {
      $scope.doRefresh();
@@ -440,33 +437,27 @@ myApp.controller('WaveCtrl', ['$scope', '$cordovaGeolocation', 'WaveData', 'Requ
       geoQuery.on("key_entered", function(key, location, distance) {
         console.log(key + " is located at [" + location + "] which is within the query (" + distance.toFixed(2) + " km from center)");
 
-        Requests.child("requestData").child(key).once("value", function(snap){
-          console.log(snap.child("ans_user_id").exists() + " " + snap.key());
+        Requests.child("requestData").child(key).once("value", function(snapshot){
+
+          if (snapshot.val().ans_user_id == "")
+          {
+              var date1 = moment(snapshot.val().time);
+              var date2 = moment().format();
+              $scope.time = date1.from(date2);
+
+              //console.log(snapshot.val().need);
+              var tempObj = {
+                request: key,
+                need: snapshot.val().need,
+                pay: snapshot.val().pay,
+                message: snapshot.val().message,
+                time: $scope.time
+              };
+
+              $scope.users_data.push(tempObj);
+          }
+
         });
-
-        //var tempRef = Requests.child("requestData").child(key).orderByChild("ans_user_id").equalTo("1234").on("value", function(snap){
-
-
-            //console.log(snap.key() + " anser id ...");
-
-
-          //var temp = Requests.child("requestData").child(snap.key()).on("value", function(snapshot){
-          //  var date1 = moment(snapshot.val().time);
-          //  var date2 = moment().format();
-          //  $scope.time = date1.from(date1);
-          //
-          //  //console.log(snapshot.val().need);
-          //  var tempObj = {
-          //    request: key,
-          //    need: snapshot.val().need,
-          //    pay: snapshot.val().pay,
-          //    message: snapshot.val().message,
-          //    time: $scope.time
-          //  };
-          //
-          //  $scope.users_data.push(tempObj);
-          //});
-        //});
 
       });
 
@@ -505,22 +496,6 @@ myApp.controller('WaveCtrl', ['$scope', '$cordovaGeolocation', 'WaveData', 'Requ
     //  });
 
   };
-
-  //$scope.users_data = [{
-  //  request: '1',
-  //  need: 'I need move some boxes',
-  //  pay: '10'
-  //},
-  //{
-  //  request: '2',
-  //  need: 'I need watch movie',
-  //  pay: '20'
-  //},
-  //{
-  //  request: '3',
-  //  need: 'I need have a drink',
-  //  pay: '30'
-  //}];
 
   $scope.select = function(index){
     WaveData.data = $scope.users_data[index];
