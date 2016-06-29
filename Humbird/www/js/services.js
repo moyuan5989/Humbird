@@ -27,3 +27,10 @@ myApp.service('WaveData', function(){
 
 	return data;
 });
+
+
+myApp.service('WaitData', function(){
+	var data = {};
+
+	return data;	
+});

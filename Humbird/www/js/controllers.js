@@ -210,8 +210,8 @@ myApp.controller('forgetPwdCtrl', function($scope, Requests, $state){
 
 });
 
-myApp.controller('HomeCtrl', ['$rootScope', '$scope', '$location', 'Requests','Instant',
-  function($rootScope, $scope, $location, Requests, Instant){
+myApp.controller('HomeCtrl', ['$rootScope', '$scope', '$location', 'Requests','Instant', 'WaitData',
+  function($rootScope, $scope, $location, Requests, Instant, WaitData){
 
     $scope.Instant = Instant;
 
@@ -283,6 +283,8 @@ $scope.form_data.message = "";
     //Requests.child("users").child($rootScope.uid).update({
     //  temp:"sss"
     //});
+    
+  WaitData.data = {request_id: ref.key()};
 
 $scope.form_data.need = "";
 $scope.form_data.pay = "";
@@ -463,11 +465,39 @@ myApp.controller('WaveDetailCtrl', ['$scope', 'Requests', '$rootScope', 'WaveDat
 
 
 
-myApp.controller('WaitCtrl', ['$scope', '$location', 
-  function($scope, $location){
+myApp.controller('WaitCtrl', ['$scope', '$location', 'Requests', 'WaitData',
+  function($scope, $location, Requests, WaitData){
     // alert('1');
   $scope.clickToReturn = function(){
     $location.path('/home')
   };
+
+  // alert(WaitData.data.request_id);
+  var res_id = WaitData.data.request_id;
+  // alert(whatever);
+  // console.log(WaitData.data + " + " + whatever);
+  Requests.child("requestData").child(res_id).on('child_changed', function(childSnapshot){
+
+    // var data = Requests.child("requestData").child(res_id);
+    // alert(data);
+    // alert(snapshot.val());
+    console.log(123);
+    $scope.$apply(function(){
+      $location.path('/holding');
+    });
+    
+    console.log(456);
+
+  });
+
+  $scope.current = {
+    // Requestss
+  }
+
+
+}]);
+
+myApp.controller('HoldCtrl', ['$scope', function($scope){
+  
 }]);
 

@@ -51,6 +51,12 @@ myApp.config(function($stateProvider, $urlRouterProvider) {
     controller: 'WaitCtrl'
   })
 
+   .state('holding', {
+    url: '/holding',
+    templateUrl: 'templates/holding.html'
+    // controller: 'HoldCtrl'
+  })
+
   .state('menu.home', {
     url: '/home',
     views: {
