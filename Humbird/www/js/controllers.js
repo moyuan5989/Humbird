@@ -367,7 +367,6 @@ myApp.controller('InstantCtrl', ['$scope', '$location', 'Instant',
 
 
 
-
 myApp.controller('ProfileCtrl', ['$scope', '$cordovaCamera',
   function($scope, $cordovaCamera){
 
