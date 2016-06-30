@@ -696,7 +696,7 @@ $scope.testClick = function(index){
   alert("add this course" + index);  
 };
 }])
-.filter('searchContacts', function(){
+.filter('searchClass', function(){
   return function (items, query) {
     var filtered = [];
     var letterMatch = new RegExp(query, 'i');
