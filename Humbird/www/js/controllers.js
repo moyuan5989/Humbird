@@ -84,8 +84,19 @@ myApp.controller('WelcomeCtrl', function (Auth, Requests, $scope, $ionicModal, $
             firstname: user.firstname,
             lastname: user.lastname
           });
+
+          Requests.child("record").child(userData.uid).set({
+            usc_csci599: 'special topic',
+            usc_csci570: 'algorithm',
+            usc_csci571: 'web technology'
+          });
+
           $ionicLoading.hide();
           $scope.modal.hide();
+
+          //clear form data
+          user = "";
+
         }).catch(function (error) {
 
           var popupAlert_error = $ionicPopup.alert({
@@ -139,15 +150,30 @@ myApp.controller('LoginCtrl',
           password: user.pwdForLogin
         }).then(function (authData) {
           console.log("Logged in as:" + authData.uid);
+
+          $rootScope.record = {};
+
           Requests.child("users").child(authData.uid).once('value', function (snapshot) {
             var val = snapshot.val();
-          // To Update AngularJS $scope either use $apply or $timeout
-          $scope.$apply(function () {
-            $rootScope.firstname = val.firstname;
-            $rootScope.lastname = val.lastname;
-            $rootScope.uid = authData.uid;
+            // To Update AngularJS $scope either use $apply or $timeout
+            $scope.$apply(function () {
+              $rootScope.firstname = val.firstname;
+              $rootScope.lastname = val.lastname;
+              $rootScope.uid = authData.uid;
+            });
           });
-        });
+
+          var id = authData.uid;
+          Requests.child("record").child(authData.uid).once('value', function(snapshot){
+
+            var obj = snapshot.val();
+
+            angular.forEach(obj, function(value, key){
+              $rootScope.record[key] = value;
+            });
+
+          });
+
           $ionicLoading.hide();
           $state.go('menu.home');
         }).catch(function (error) {
@@ -269,7 +295,7 @@ myApp.controller('HomeCtrl', ['$rootScope', '$scope', '$location', 'Requests','I
 
     var ref = Requests.child("requestData").push();
     var geoRef = Requests.child("geoData");
-    var geoFire = new GeoFire(geoRef);
+    //var geoFire = new GeoFire(geoRef);
 
     var need = $scope.form_data.need;
     var pay = $scope.form_data.pay;
@@ -277,36 +303,47 @@ myApp.controller('HomeCtrl', ['$rootScope', '$scope', '$location', 'Requests','I
 
     var time = moment().format();
 
-    var posOptions = {timeout: 10000, enableHighAccuracy: false};
-    $cordovaGeolocation
-      .getCurrentPosition(posOptions)
-      .then(function (position) {
-        var lat  = position.coords.latitude;
-        var long = position.coords.longitude;
+    ref.set({
+      reqID: ref.key(),
+      need: need,
+      pay: pay,
+      message: message,
+      req_user_id: $scope.submit_data.data.getAuth().uid,
+      ans_user_id: '',
+      time: time,
+      courseID: 'usc_csci599'
+    });
 
-        ref.set({
-          reqID: ref.key(),
-          need: need,
-          pay: pay,
-          message: message,
-          req_user_id: $scope.submit_data.data.getAuth().uid,
-          ans_user_id: '',
-          lat: lat,
-          long: long,
-          time: time
-        });
-
-        geoFire.set(ref.key(), [lat, long]);
-        //alert(need + " " + pay + " " + message);
-        //console.log(need + " " + pay + " " + message);
-      }, function(err) {
-        // error
-        var popupAlert_wrong = $ionicPopup.alert({
-          title: 'Location Service Failure',
-          template: 'We cannot get current location',
-          okType: 'button-calm'
-        });
-      });
+    //var posOptions = {timeout: 10000, enableHighAccuracy: false};
+    //$cordovaGeolocation
+    //  .getCurrentPosition(posOptions)
+    //  .then(function (position) {
+    //    var lat  = position.coords.latitude;
+    //    var long = position.coords.longitude;
+    //
+    //    ref.set({
+    //      reqID: ref.key(),
+    //      need: need,
+    //      pay: pay,
+    //      message: message,
+    //      req_user_id: $scope.submit_data.data.getAuth().uid,
+    //      ans_user_id: '',
+    //      lat: lat,
+    //      long: long,
+    //      time: time
+    //    });
+    //
+    //    geoFire.set(ref.key(), [lat, long]);
+    //    //alert(need + " " + pay + " " + message);
+    //    //console.log(need + " " + pay + " " + message);
+    //  }, function(err) {
+    //    // error
+    //    var popupAlert_wrong = $ionicPopup.alert({
+    //      title: 'Location Service Failure',
+    //      template: 'We cannot get current location',
+    //      okType: 'button-calm'
+    //    });
+    //  });
 
   $scope.form_data.need = "";
   $scope.form_data.pay = "";
@@ -388,15 +425,15 @@ myApp.controller('ProfileCtrl', ['$scope', '$cordovaCamera',
 
   }]);
 
-myApp.controller('WaveCtrl', ['$scope', '$cordovaGeolocation', 'WaveData', 'Requests',
- function($scope, $cordovaGeolocation, WaveData, Requests){
+myApp.controller('WaveCtrl', ['$scope', '$rootScope', '$cordovaGeolocation', 'WaveData', 'Requests',
+ function($scope, $rootScope, $cordovaGeolocation, WaveData, Requests){
 
   /************* initialize data ***********************/
 
-  $scope.current_user = {
-    latitude: '',
-    longitude: ''
-  };
+  //$scope.current_user = {
+  //  latitude: '',
+  //  longitude: ''
+  //};
 
   $scope.users_data = [];
 
@@ -407,71 +444,117 @@ myApp.controller('WaveCtrl', ['$scope', '$cordovaGeolocation', 'WaveData', 'Requ
      //console.log("refresh on load...");
   });
 
-  var geoFire = new GeoFire(Requests.child("geoData"));
+  //var geoFire = new GeoFire(Requests.child("geoData"));
 
   $scope.doRefresh = function(){
-    var posOptions = {timeout: 10000, enableHighAccuracy: false};
-    $cordovaGeolocation
-    .getCurrentPosition(posOptions)
-    .then(function (position) {
-      var lat  = position.coords.latitude;
-      var long = position.coords.longitude;
 
-      $scope.current_user = {
-        latitude: lat,
-        longitude: long
-      };
+    $scope.users_data = [];
 
-      $scope.users_data = [];
-      //alert("lat " + lat + " long " + long);
+    Requests.child("requestData").once("value", function(snapshot){
 
-      /* query based on geo location from firebase */
-      var geoQuery;
-      var radius = 1000;
+      snapshot.forEach(function(data) {
 
-      geoQuery = geoFire.query({
-        center: [lat, long],
-        radius: radius
-      });
+        if (data.val().ans_user_id == "" && $rootScope.record[data.val().courseID])
+        {
+          var date1 = moment(data.val().time);
+          var date2 = moment().format();
+          $scope.time = date1.from(date2);
 
-      geoQuery.on("key_entered", function(key, location, distance) {
-        console.log(key + " is located at [" + location + "] which is within the query (" + distance.toFixed(2) + " km from center)");
+          //console.log(snapshot.val().need);
+          var tempObj = {
+            request: data.key(),
+            need: data.val().need,
+            pay: data.val().pay,
+            message: data.val().message,
+            time: $scope.time
+          };
 
-        Requests.child("requestData").child(key).once("value", function(snapshot){
-
-          if (snapshot.val().ans_user_id == "")
-          {
-              var date1 = moment(snapshot.val().time);
-              var date2 = moment().format();
-              $scope.time = date1.from(date2);
-
-              //console.log(snapshot.val().need);
-              var tempObj = {
-                request: key,
-                need: snapshot.val().need,
-                pay: snapshot.val().pay,
-                message: snapshot.val().message,
-                time: $scope.time
-              };
-
-              $scope.users_data.push(tempObj);
-          }
-
-        });
+          $scope.users_data.push(tempObj);
+        }
 
       });
 
-      /***********************************************/
+      //if (snapshot.val().ans_user_id == "")
+      //{
+      //    var date1 = moment(snapshot.val().time);
+      //    var date2 = moment().format();
+      //    $scope.time = date1.from(date2);
+      //
+      //    //console.log(snapshot.val().need);
+      //    var tempObj = {
+      //      request: snapshot.key(),
+      //      need: snapshot.val().need,
+      //      pay: snapshot.val().pay,
+      //      message: snapshot.val().message,
+      //      time: $scope.time
+      //    };
+      //
+      //    $scope.users_data.push(tempObj);
+      //}
 
-    }, function(err) {
-      var popupAlert_wrong = $ionicPopup.alert({
-        title: 'Location Service Failure',
-        template: 'We cannot get current location',
-        okType: 'button-calm'
-      });
-    }).finally(function(){
-      $scope.$broadcast('scroll.refreshComplete');
     });
+
+
+    //var posOptions = {timeout: 10000, enableHighAccuracy: false};
+    //$cordovaGeolocation
+    //.getCurrentPosition(posOptions)
+    //.then(function (position) {
+    //  var lat  = position.coords.latitude;
+    //  var long = position.coords.longitude;
+    //
+    //  $scope.current_user = {
+    //    latitude: lat,
+    //    longitude: long
+    //  };
+    //
+    //  $scope.users_data = [];
+    //  //alert("lat " + lat + " long " + long);
+    //
+    //  /* query based on geo location from firebase */
+    //  var geoQuery;
+    //  var radius = 1000;
+    //
+    //  geoQuery = geoFire.query({
+    //    center: [lat, long],
+    //    radius: radius
+    //  });
+    //
+    //  geoQuery.on("key_entered", function(key, location, distance) {
+    //    console.log(key + " is located at [" + location + "] which is within the query (" + distance.toFixed(2) + " km from center)");
+    //
+    //    Requests.child("requestData").child(key).once("value", function(snapshot){
+    //
+    //      if (snapshot.val().ans_user_id == "")
+    //      {
+    //          var date1 = moment(snapshot.val().time);
+    //          var date2 = moment().format();
+    //          $scope.time = date1.from(date2);
+    //
+    //          //console.log(snapshot.val().need);
+    //          var tempObj = {
+    //            request: key,
+    //            need: snapshot.val().need,
+    //            pay: snapshot.val().pay,
+    //            message: snapshot.val().message,
+    //            time: $scope.time
+    //          };
+    //
+    //          $scope.users_data.push(tempObj);
+    //      }
+    //
+    //    });
+    //
+    //  });
+    //
+    //}, function(err) {
+    //  var popupAlert_wrong = $ionicPopup.alert({
+    //    title: 'Location Service Failure',
+    //    template: 'We cannot get current location',
+    //    okType: 'button-calm'
+    //  });
+    //}).finally(function(){
+    //  $scope.$broadcast('scroll.refreshComplete');
+    //});
 
   };
 
