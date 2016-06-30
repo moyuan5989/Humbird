@@ -236,8 +236,9 @@ myApp.controller('forgetPwdCtrl', function($scope, Requests, $state){
 
 });
 
-myApp.controller('HomeCtrl', ['$rootScope', '$scope', '$location', 'Requests','Instant', '$cordovaGeolocation', '$ionicPopup',
-  function($rootScope, $scope, $location, Requests, Instant, $cordovaGeolocation, $ionicPopup){
+
+myApp.controller('HomeCtrl', ['$rootScope', '$scope', '$location', 'Requests','Instant', 'WaitData', '$cordovaGeolocation', '$ionicPopup',
+  function($rootScope, $scope, $location, Requests, Instant, WaitData, $cordovaGeolocation, $ionicPopup){
 
     $scope.Instant = Instant;
 
@@ -302,7 +303,7 @@ myApp.controller('HomeCtrl', ['$rootScope', '$scope', '$location', 'Requests','I
     var message = $scope.form_data.message;
 
     var time = moment().format();
-
+    
     ref.set({
       reqID: ref.key(),
       need: need,
@@ -344,6 +345,7 @@ myApp.controller('HomeCtrl', ['$rootScope', '$scope', '$location', 'Requests','I
     //      okType: 'button-calm'
     //    });
     //  });
+
 
   $scope.form_data.need = "";
   $scope.form_data.pay = "";
@@ -392,7 +394,6 @@ myApp.controller('InstantCtrl', ['$scope', '$location', 'Instant',
       });
 
     }]);
-
 
 
 
@@ -618,11 +619,39 @@ myApp.controller('WaveDetailCtrl', ['$scope', 'Requests', '$rootScope', 'WaveDat
 
 
 
-myApp.controller('WaitCtrl', ['$scope', '$location',
-  function($scope, $location){
-    // alert('1');
+myApp.controller('WaitCtrl', ['$scope', '$location', 'Requests', 'WaitData',
+  function($scope, $location, Requests, WaitData){
+
   $scope.clickToReturn = function(){
     $location.path('/home')
   };
+
+  // alert(WaitData.data.request_id);
+  var res_id = WaitData.data.request_id;
+  // alert(whatever);
+  // console.log(WaitData.data + " + " + whatever);
+  Requests.child("requestData").child(res_id).on('child_changed', function(childSnapshot){
+
+    // var data = Requests.child("requestData").child(res_id);
+    // alert(data);
+    // alert(snapshot.val());
+    console.log(123);
+    $scope.$apply(function(){
+      $location.path('/holding');
+    });
+
+    console.log(456);
+
+  });
+
+  $scope.current = {
+    // Requestss
+  }
+
+
+}]);
+
+myApp.controller('HoldCtrl', ['$scope', function($scope){
+
 }]);
 
