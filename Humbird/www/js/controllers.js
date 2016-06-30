@@ -283,7 +283,10 @@ myApp.controller('HomeCtrl', ['$rootScope', '$scope', '$location', 'Requests','I
     //  temp:"sss"
     //});
     
+      console.log("hhhh");
   WaitData.data = {request_id: ref.key()};
+      console.log(WaitData.data.request_id);
+      console.log("dddd");
 
     var posOptions = {timeout: 10000, enableHighAccuracy: false};
     $cordovaGeolocation
@@ -549,8 +552,8 @@ myApp.controller('WaitCtrl', ['$scope', '$location', 'Requests', 'WaitData',
   $scope.clickToReturn = function(){
     $location.path('/home')
   };
-
-  // alert(WaitData.data.request_id);
+ 
+   console.log("sdsdsd" + WaitData.data.request_id);
   var res_id = WaitData.data.request_id;
   // alert(whatever);
   // console.log(WaitData.data + " + " + whatever);
@@ -579,3 +582,10 @@ myApp.controller('HoldCtrl', ['$scope', function($scope){
   
 }]);
 
+myApp.controller('SetCtrl', ['$scope', function($scope){
+    $scope.imgURI = "img/user_profile.jpg"
+}]);
+
+myApp.controller('InfoCtrl', ['$scope', function($scope){
+//    $scope.imgURI = "img/user_profile.jpg"
+}]);
