@@ -1,44 +1,100 @@
-<ion-view title="History" id="page2" class=" ">
-    <ion-content padding="false" class="has-header">
+<ion-view title="History" id="page2" class="">
 
+  <!--<ion-tabs class="tabs-icon-top tabs-background">-->
 
-	<ion-list id="wave-list2" class=" ">
-            <ion-item class="item-avatar " id="wave-list-item13" ui-sref="menu.wave2">
-                <img src="img/xwWJwsfBS3Wj4sQgJTXf_people.jpg">
-                <span class="item-note">6-6</span>
-                <h2>Help HG move some boxes</h2> 
-                <p>I earn $ 10</p>
-            </ion-item>
+    <!--&lt;!&ndash;<ion-tab title="Sent" icon-on="ion-ios-paperplane calm" icon-off="ion-ios-paperplane-outline calm">&ndash;&gt;-->
+      <!--&lt;!&ndash;&lt;!&ndash; Tab 1 content &ndash;&gt;&ndash;&gt;-->
+    <!--&lt;!&ndash;</ion-tab>&ndash;&gt;-->
 
-            <ion-item class="item-avatar  " id="wave-list-item21" ui-sref="menu.wave2">
-                <img src="img/UZ95hgwrRzW6BkgvvzBm_girl.jpg" >
-                <span class="item-note">6-5</span>
-                <h2>HG help me bring stuff</h2>
-                <p>I pay $ 10</p>
-            </ion-item>
-            <ion-item class="item-avatar  " id="wave-list-item22" ui-sref="menu.wave2">
-                <img src="img/UZ95hgwrRzW6BkgvvzBm_girl.jpg">
-                <span class="item-note">6-5</span>
-                <h2>HG help me have a drink</h2>
-                <p>I pay $ 5</p>
-            </ion-item>
-            <ion-item class="item-avatar  " id="wave-list-item23" ui-sref="menu.wave2">
-                <img src="img/xwWJwsfBS3Wj4sQgJTXf_people.jpg">
-                <span class="item-note">6-4</span>
-                <h2>Help HG do homework</h2>
-                <p>I earn $ 100</p>
-            </ion-item>
-            <ion-item class="item-avatar  " id="wave-list-item24" ui-sref="menu.wave2">
-                <img src="img/UZ95hgwrRzW6BkgvvzBm_girl.jpg">
-                <span class="item-note">6-2</span>
-                <h2>Help HG do math</h2>
-                <p>I earn $ 20</p>
-            </ion-item>
-           
-        </ion-list>
+    <!--&lt;!&ndash;<ion-tab title="Ongoing" icon-on="ion-ionic calm" icon-off="ion-ios-ionic-outline calm">&ndash;&gt;-->
+      <!--&lt;!&ndash;&lt;!&ndash; Tab 2 content &ndash;&gt;&ndash;&gt;-->
+    <!--&lt;!&ndash;</ion-tab>&ndash;&gt;-->
 
+    <!--&lt;!&ndash;<ion-tab title="archived" icon-on="ion-ios-email calm" icon-off="ion-ios-email-outline calm">&ndash;&gt;-->
+      <!--&lt;!&ndash;&lt;!&ndash; Tab 3 content &ndash;&gt;&ndash;&gt;-->
+    <!--&lt;!&ndash;</ion-tab>&ndash;&gt;-->
 
-</ion-content>
+  <!--</ion-tabs>-->
+
+  <ion-content padding="false" class="has-header">
+
+    <ion-refresher
+      pulling-text="Pull to refresh..."
+      on-refresh="doRefresh()">
+    </ion-refresher>
+
+    <!--<ion-list id="wave-list2" class="">-->
+
+      <!--<ion-item class="item-avatar " id="wave-list-item13" ui-sref="menu.wave2">-->
+          <!--<img src="img/xwWJwsfBS3Wj4sQgJTXf_people.jpg">-->
+          <!--<span class="item-note">6-6</span>-->
+          <!--<h2>Help HG move some boxes</h2>-->
+          <!--<p>I earn $ 10</p>-->
+      <!--</ion-item>-->
+
+      <!--<ion-item class="item-avatar  " id="wave-list-item21" ui-sref="menu.wave2">-->
+          <!--<img src="img/UZ95hgwrRzW6BkgvvzBm_girl.jpg" >-->
+          <!--<span class="item-note">6-5</span>-->
+          <!--<h2>HG help me bring stuff</h2>-->
+          <!--<p>I pay $ 10</p>-->
+      <!--</ion-item>-->
+      <!--<ion-item class="item-avatar  " id="wave-list-item22" ui-sref="menu.wave2">-->
+          <!--<img src="img/UZ95hgwrRzW6BkgvvzBm_girl.jpg">-->
+          <!--<span class="item-note">6-5</span>-->
+          <!--<h2>HG help me have a drink</h2>-->
+          <!--<p>I pay $ 5</p>-->
+      <!--</ion-item>-->
+      <!--<ion-item class="item-avatar  " id="wave-list-item23" ui-sref="menu.wave2">-->
+          <!--<img src="img/xwWJwsfBS3Wj4sQgJTXf_people.jpg">-->
+          <!--<span class="item-note">6-4</span>-->
+          <!--<h2>Help HG do homework</h2>-->
+          <!--<p>I earn $ 100</p>-->
+      <!--</ion-item>-->
+      <!--<ion-item class="item-avatar  " id="wave-list-item24" ui-sref="menu.wave2">-->
+          <!--<img src="img/UZ95hgwrRzW6BkgvvzBm_girl.jpg">-->
+          <!--<span class="item-note">6-2</span>-->
+          <!--<h2>Help HG do math</h2>-->
+          <!--<p>I earn $ 20</p>-->
+      <!--</ion-item>-->
+
+    <!--</ion-list>-->
+
+    <div class="list">
+
+      <!--<a class="item item-avatar" href="#">-->
+        <!--<img src="img/xwWJwsfBS3Wj4sQgJTXf_people.jpg">-->
+        <!--<span class="item-note">6-6</span>-->
+        <!--<h2>Help HG move some boxes</h2>-->
+        <!--<p>-->
+          <!--I earn $ 10-->
+          <!--<span class="item-note">sent</span>-->
+        <!--</p>-->
+      <!--</a>-->
+
+      <!--<a class="item item-avatar" href="#">-->
+        <!--<img src="img/UZ95hgwrRzW6BkgvvzBm_girl.jpg" >-->
+        <!--<span class="item-note">6-5</span>-->
+        <!--<h2>HG help me bring stuff</h2>-->
+        <!--<p>-->
+          <!--I pay $ 10-->
+          <!--<span class="item-note">ongoing</span>-->
+        <!--</p>-->
+      <!--</a>-->
+
+      <a class="item item-avatar" ng-repeat="history_data in histories_data"
+                ng-click="select($index)">
+        <img src="img/user1.jpg">
+        <span class="item-note">{{ history_data.time }}</span>
+        <h2>{{ history_data.need }}</h2>
+        <p>
+          $ {{ history_data.pay }}
+          <span class="item-note">{{ history_data.status }}</span>
+        </p>
+      </a>
+
+    </div>
+
+  </ion-content>
 
 
 </ion-view>

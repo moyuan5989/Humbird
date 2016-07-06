@@ -303,7 +303,7 @@ myApp.controller('HomeCtrl', ['$rootScope', '$scope', '$location', 'Requests','I
     var message = $scope.form_data.message;
 
     var time = moment().format();
-    
+
     ref.set({
       reqID: ref.key(),
       need: need,
@@ -425,6 +425,68 @@ myApp.controller('ProfileCtrl', ['$scope', '$cordovaCamera',
 
 
   }]);
+
+myApp.controller('HistoryCtrl', ['$scope', 'Requests', '$rootScope', function($scope, Requests, $rootScope){
+
+  $scope.histories_data = [];
+
+  $scope.$on('$ionicView.enter', function() {
+    console.log("history controller initiated...");
+    $scope.doRefresh();
+  });
+
+  $scope.doRefresh = function(){
+
+    $scope.histories_data = [];
+
+    Requests.child("requestData").once("value", function(snapshot){
+
+      snapshot.forEach(function(data){
+
+        var date1 = moment(data.val().time);
+        var date2 = moment().format();
+        $scope.time = date1.from(date2);
+
+        //console.log(snapshot.val().need);
+        var tempObj = {
+          request: data.key(),
+          need: data.val().need,
+          pay: data.val().pay,
+          message: data.val().message,
+          time: $scope.time
+        };
+
+        //sent
+        if (data.val().ans_user_id != "" && data.val().req_user_id == $rootScope.uid)
+        {
+          tempObj.status = "Sent";
+          $scope.histories_data.push(tempObj);
+        }
+        //ongoing
+        else if (data.val().ans_user_id == "" && data.val().req_user_id == $rootScope.uid)
+        {
+          tempObj.status = "Ongoing";
+          $scope.histories_data.push(tempObj);
+        }
+        //archived
+        else if(data.val().ans_user_id == $rootScope.uid && data.val().req_user_id != $rootScope.uid)
+        {
+          tempObj.status = "Archived";
+          $scope.histories_data.push(tempObj);
+        }
+      });
+
+    });
+
+    $scope.$broadcast('scroll.refreshComplete');
+  };
+
+  $scope.select = function(index){
+    WaveData.data = $scope.histories_data[index];
+    // alert(WaveData.data.need);
+  };
+
+}]);
 
 myApp.controller('WaveCtrl', ['$scope', '$rootScope', '$cordovaGeolocation', 'WaveData', 'Requests',
  function($scope, $rootScope, $cordovaGeolocation, WaveData, Requests){
@@ -627,22 +689,22 @@ myApp.controller('WaitCtrl', ['$scope', '$location', 'Requests', 'WaitData',
   };
 
   // alert(WaitData.data.request_id);
-  var res_id = WaitData.data.request_id;
+  //var res_id = WaitData.data.request_id;
   // alert(whatever);
   // console.log(WaitData.data + " + " + whatever);
-  Requests.child("requestData").child(res_id).on('child_changed', function(childSnapshot){
-
-    // var data = Requests.child("requestData").child(res_id);
-    // alert(data);
-    // alert(snapshot.val());
-    console.log(123);
-    $scope.$apply(function(){
-      $location.path('/holding');
-    });
-
-    console.log(456);
-
-  });
+  //Requests.child("requestData").child(res_id).on('child_changed', function(childSnapshot){
+  //
+  //  // var data = Requests.child("requestData").child(res_id);
+  //  // alert(data);
+  //  // alert(snapshot.val());
+  //  console.log(123);
+  //  $scope.$apply(function(){
+  //    $location.path('/holding');
+  //  });
+  //
+  //  console.log(456);
+  //
+  //});
 
   $scope.current = {
     // Requestss
