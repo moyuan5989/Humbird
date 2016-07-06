@@ -56,6 +56,16 @@ myApp.config(function($stateProvider, $urlRouterProvider) {
     templateUrl: 'templates/holding.html'
     // controller: 'HoldCtrl'
   })
+  
+   .state('menu.info', {
+    url: '/info',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/info.html',
+        controller: 'InfoCtrl'
+      }
+    }
+  })
 
   .state('menu.home', {
     url: '/home',
@@ -114,7 +124,7 @@ myApp.config(function($stateProvider, $urlRouterProvider) {
     views: {
       'menuContent': {
         templateUrl: 'templates/setting.html',
-        // controller: 'SetCtrl'
+         controller: 'SetCtrl'
       }
     }
   })

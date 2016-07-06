@@ -688,8 +688,8 @@ myApp.controller('WaitCtrl', ['$scope', '$location', 'Requests', 'WaitData',
     $location.path('/home')
   };
 
-  // alert(WaitData.data.request_id);
-  //var res_id = WaitData.data.request_id;
+   console.log("sdsdsd" + WaitData.data.request_id);
+  var res_id = WaitData.data.request_id;
   // alert(whatever);
   // console.log(WaitData.data + " + " + whatever);
   //Requests.child("requestData").child(res_id).on('child_changed', function(childSnapshot){
@@ -716,4 +716,37 @@ myApp.controller('WaitCtrl', ['$scope', '$location', 'Requests', 'WaitData',
 myApp.controller('HoldCtrl', ['$scope', function($scope){
 
 }]);
+
+myApp.controller('SetCtrl', ['$scope', function($scope){
+    $scope.imgURI = "img/user_profile.jpg"
+}]);
+
+myApp.controller('InfoCtrl', ['$scope', function($scope){
+    $scope.contacts = window.CLASS;
+
+  $scope.clearSearch = function() {
+    $scope.search = '';
+  };
+
+$scope.testClick = function(index){
+  alert("add this course" + index);
+};
+}])
+.filter('searchClass', function(){
+  return function (items, query) {
+    var filtered = [];
+    var letterMatch = new RegExp(query, 'i');
+    for (var i = 0; i < items.length; i++) {
+      var item = items[i];
+      if (query) {
+        if (letterMatch.test(item.last_name.substring(0, query.length))) {
+          filtered.push(item);
+        }
+      } else {
+        filtered.push(item);
+      }
+    }
+    return filtered;
+  };
+});
 

@@ -1,0 +1,22 @@
+<ion-view title="Welcome" ng-controller="HoldCtrl">
+    <ion-content padding="true" class="has-header">
+       <input type="search"
+        placeholder="Filter contacts..."
+        ng-model="search">
+      <button ng-if="search.length"
+        class="button button-icon ion-android-close input-button"
+        ng-click="clearSearch()">
+      </button>
+    
+    <div class="list">
+        <a class="item my-item" ng-click="testClick($index)"
+          collection-repeat="item in contacts | orderBy:'first_name' | searchClass:search"
+          collection-item-height="60"
+          collection-item-width="'100%'">
+<!--          <img ng-src="http://placekitten.com/60/{{55 + ($index % 10)}}">-->
+          {{item.first_name+' '+item.last_name}} 
+        </a>
+      </div>
+
+    </ion-content>
+</ion-view>
