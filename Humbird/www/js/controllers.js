@@ -426,7 +426,7 @@ myApp.controller('ProfileCtrl', ['$scope', '$cordovaCamera',
 
   }]);
 
-myApp.controller('HistoryCtrl', ['$scope', 'Requests', '$rootScope', function($scope, Requests, $rootScope){
+myApp.controller('HistoryCtrl', ['$scope', 'Requests', '$rootScope', 'HistoryData',function($scope, Requests, $rootScope, HistoryData){
 
   $scope.histories_data = [];
 
@@ -460,19 +460,27 @@ myApp.controller('HistoryCtrl', ['$scope', 'Requests', '$rootScope', function($s
         if (data.val().ans_user_id != "" && data.val().req_user_id == $rootScope.uid)
         {
           tempObj.status = "Sent";
+          tempObj.firstname = $rootScope.firstname;
+          tempObj.lastname = $rootScope.lastname;
           $scope.histories_data.push(tempObj);
         }
         //ongoing
-        else if (data.val().ans_user_id == "" && data.val().req_user_id == $rootScope.uid)
-        {
-          tempObj.status = "Ongoing";
-          $scope.histories_data.push(tempObj);
-        }
+        //else if (data.val().ans_user_id == "" && data.val().req_user_id == $rootScope.uid)
+        //{
+        //  tempObj.status = "Ongoing";
+        //  tempObj.firstname = $rootScope.firstname;
+        //  tempObj.lastname = $rootScope.lastname;
+        //  $scope.histories_data.push(tempObj);
+        //}
         //archived
         else if(data.val().ans_user_id == $rootScope.uid && data.val().req_user_id != $rootScope.uid)
         {
-          tempObj.status = "Archived";
-          $scope.histories_data.push(tempObj);
+          Requests.child("users").child(data.val().req_user_id).once("value", function (snap) {
+            tempObj.status = "Archived";
+            tempObj.firstname = snap.val().firstname;
+            tempObj.lastname = snap.val().lastname;
+            $scope.histories_data.push(tempObj);
+          });
         }
       });
 
@@ -482,8 +490,22 @@ myApp.controller('HistoryCtrl', ['$scope', 'Requests', '$rootScope', function($s
   };
 
   $scope.select = function(index){
-    WaveData.data = $scope.histories_data[index];
+    HistoryData.data = $scope.histories_data[index];
     // alert(WaveData.data.need);
+  };
+
+}]);
+
+myApp.controller('HistoryDetailCtrl', ['$scope', 'HistoryData', function($scope, HistoryData){
+
+  console.log("history detail controller initiate...");
+
+  $scope.history_data = {
+    need: HistoryData.data.need,
+    pay: HistoryData.data.pay,
+    message: HistoryData.data.message,
+    firstname: HistoryData.data.firstname,
+    lastname: HistoryData.data.lastname
   };
 
 }]);
@@ -513,12 +535,11 @@ myApp.controller('WaveCtrl', ['$scope', '$rootScope', '$cordovaGeolocation', 'Wa
 
     $scope.users_data = [];
 
-    Requests.child("requestData").once("value", function(snapshot){
+    Requests.child("requestData").once("value", function(snapshot) {
 
-      snapshot.forEach(function(data) {
+      snapshot.forEach(function (data) {
 
-        if (data.val().ans_user_id == "" && $rootScope.record[data.val().courseID])
-        {
+        if (data.val().ans_user_id == "" && $rootScope.record[data.val().courseID]) {
           var date1 = moment(data.val().time);
           var date2 = moment().format();
           $scope.time = date1.from(date2);
@@ -536,111 +557,7 @@ myApp.controller('WaveCtrl', ['$scope', '$rootScope', '$cordovaGeolocation', 'Wa
         }
 
       });
-
-      //if (snapshot.val().ans_user_id == "")
-      //{
-      //    var date1 = moment(snapshot.val().time);
-      //    var date2 = moment().format();
-      //    $scope.time = date1.from(date2);
-      //
-      //    //console.log(snapshot.val().need);
-      //    var tempObj = {
-      //      request: snapshot.key(),
-      //      need: snapshot.val().need,
-      //      pay: snapshot.val().pay,
-      //      message: snapshot.val().message,
-      //      time: $scope.time
-      //    };
-      //
-      //    $scope.users_data.push(tempObj);
-      //}
-
     });
-
-
-    //var posOptions = {timeout: 10000, enableHighAccuracy: false};
-    //$cordovaGeolocation
-    //.getCurrentPosition(posOptions)
-    //.then(function (position) {
-    //  var lat  = position.coords.latitude;
-    //  var long = position.coords.longitude;
-    //
-    //  $scope.current_user = {
-    //    latitude: lat,
-    //    longitude: long
-    //  };
-    //
-    //  $scope.users_data = [];
-    //  //alert("lat " + lat + " long " + long);
-    //
-    //  /* query based on geo location from firebase */
-    //  var geoQuery;
-    //  var radius = 1000;
-    //
-    //  geoQuery = geoFire.query({
-    //    center: [lat, long],
-    //    radius: radius
-    //  });
-    //
-    //  geoQuery.on("key_entered", function(key, location, distance) {
-    //    console.log(key + " is located at [" + location + "] which is within the query (" + distance.toFixed(2) + " km from center)");
-    //
-    //    Requests.child("requestData").child(key).once("value", function(snapshot){
-    //
-    //      if (snapshot.val().ans_user_id == "")
-    //      {
-    //          var date1 = moment(snapshot.val().time);
-    //          var date2 = moment().format();
-    //          $scope.time = date1.from(date2);
-    //
-    //          //console.log(snapshot.val().need);
-    //          var tempObj = {
-    //            request: key,
-    //            need: snapshot.val().need,
-    //            pay: snapshot.val().pay,
-    //            message: snapshot.val().message,
-    //            time: $scope.time
-    //          };
-    //
-    //          $scope.users_data.push(tempObj);
-    //      }
-    //
-    //    });
-    //
-    //  });
-    //
-    //}, function(err) {
-    //  var popupAlert_wrong = $ionicPopup.alert({
-    //    title: 'Location Service Failure',
-    //    template: 'We cannot get current location',
-    //    okType: 'button-calm'
-    //  });
-    //}).finally(function(){
-    //  $scope.$broadcast('scroll.refreshComplete');
-    //});
-
-  };
-
-  $scope.test = function(){
-    //alert('hah');
-
-    //var posOptions = {timeout: 10000, enableHighAccuracy: false};
-    //$cordovaGeolocation
-    //.getCurrentPosition(posOptions)
-    //.then(function (position) {
-    //  var lat  = position.coords.latitude;
-    //  var long = position.coords.longitude;
-    //
-    //    //alert("lat " + lat + " long " + long);
-    //  }, function(err) {
-    //    // error
-    //    var popupAlert_wrong = $ionicPopup.alert({
-    //      title: 'Location Service Failure',
-    //      template: 'We cannot get current location',
-    //      okType: 'button-calm'
-    //    });
-    //  });
-
   };
 
   $scope.select = function(index){

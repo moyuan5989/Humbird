@@ -1,5 +1,5 @@
 myApp.factory('Requests', function($firebaseArray){
-	
+
 	var reqRef = new Firebase(firebaseUrl);
     // return $firebaseArray(reqRef);
     return reqRef;
@@ -13,8 +13,8 @@ myApp.factory('Requests', function($firebaseArray){
     }]);
 
 myApp.service('Instant', function(){
-	
-	
+
+
 
 	var instant_value = {select_value: ""};
 
@@ -28,9 +28,14 @@ myApp.service('WaveData', function(){
 	return data;
 });
 
+myApp.service('HistoryData', function(){
+  var data = {};
+
+  return data;
+});
 
 myApp.service('WaitData', function(){
 	var data = {};
 
-	return data;	
+	return data;
 });

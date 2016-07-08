@@ -82,7 +82,7 @@
       <!--</a>-->
 
       <a class="item item-avatar" ng-repeat="history_data in histories_data"
-                ng-click="select($index)">
+                ng-click="select($index)" href="#/menu/history_detail">
         <img src="img/user1.jpg">
         <span class="item-note">{{ history_data.time }}</span>
         <h2>{{ history_data.need }}</h2>

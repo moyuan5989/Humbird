@@ -56,7 +56,7 @@ myApp.config(function($stateProvider, $urlRouterProvider) {
     templateUrl: 'templates/holding.html'
     // controller: 'HoldCtrl'
   })
-  
+
    .state('menu.info', {
     url: '/info',
     views: {
@@ -114,7 +114,18 @@ myApp.config(function($stateProvider, $urlRouterProvider) {
     views: {
       'menuContent': {
         templateUrl: 'templates/wave_detail.html',
-        // controller: 'WaveDetailCtrl'
+        controller: 'WaveDetailCtrl'
+      }
+    }
+  })
+
+  .state('menu.history_detail', {
+    url: '/history_detail',
+    cache: false,
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/history_detail.html',
+        controller: 'HistoryDetailCtrl'
       }
     }
   })
